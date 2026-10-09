@@ -9,7 +9,7 @@ market-adjusted return around the call → correlation statistics → **Streamli
 ## Quick start
 
 ```bash
-pip install -r requirements.txt
+pip install -r requirements-full.txt
 
 # 1. Put a transcript file at data/transcripts.csv (columns: ticker, date, text; see data/README.md)
 # 2. Run the pipeline (downloads FinBERT ~440 MB on first run, prices via yfinance)
@@ -81,7 +81,7 @@ redistribution. Options:
 ## Deploy
 
 - **Streamlit Community Cloud** (free): push the repo to GitHub, point it at `app.py`, and use
-  `requirements-app.txt` (the dashboard doesn't need torch/transformers). Commit `results/results.csv`.
+  `requirements.txt` (the dashboard doesn't need torch/transformers). Commit `results/results.csv`.
 - **HuggingFace Spaces**: create a Space with the **Docker** SDK (README front-matter `sdk: docker`,
   `app_port: 7860`) and push this repo; the included `Dockerfile` serves the dashboard on port 7860.
 

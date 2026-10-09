@@ -75,14 +75,14 @@ with tab1:
             hovertemplate="ρ = %{x:.3f}<br>p = %{customdata[0]:.3f}<br>n = %{customdata[1]}<extra></extra>"))
         fig.update_layout(title="Spearman correlation with abnormal return", height=380,
                           xaxis_title="Spearman ρ", yaxis=dict(autorange="reversed"))
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, width="stretch")
 
     show = tbl.copy()
     show["feature"] = show["feature"].map(FEATURE_LABELS)
     st.dataframe(show.rename(columns={"spearman_rho": "Spearman ρ", "spearman_p": "p (Spearman)",
                                       "pearson_r": "Pearson r", "pearson_p": "p (Pearson)",
                                       "hit_rate": "Sign hit-rate", "hit_p": "p (hit-rate)"}),
-                 use_container_width=True, hide_index=True)
+                 width="stretch", hide_index=True)
     st.caption("Abnormal return = stock return minus SPY return over close(T-1) → close(T+1), "
                "where T is the first trading day on/after the call date.")
 
@@ -103,7 +103,7 @@ with tab2:
             fig.add_trace(go.Scatter(x=xs, y=slope * xs + icpt, mode="lines",
                                      line=dict(color="black", dash="dash"), name="OLS fit"))
         fig.update_layout(height=520, xaxis_title=FEATURE_LABELS[feat], yaxis_title=tgt.replace("_pct", " (%)"))
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, width="stretch")
         r = correlation_table(sub.rename(columns={tgt: "target"}), [feat], target="target")
         if not r.empty and pd.notna(r["spearman_rho"].iloc[0]):
             st.write(f"n = {int(r['n'].iloc[0])}, Spearman ρ = {r['spearman_rho'].iloc[0]:.3f} "
@@ -123,10 +123,10 @@ with tab3:
     fig.update_layout(barmode="group", height=480, xaxis=dict(type="category"))
     fig.update_yaxes(title_text="Sentiment (P(pos) − P(neg))", secondary_y=False)
     fig.update_yaxes(title_text="Abnormal return (%)", secondary_y=True)
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width="stretch")
 
 # ------------------------------------------------------------------- data
 with tab4:
     st.dataframe(df.drop(columns=[c for c in df.columns if c.endswith("_pct")]),
-                 use_container_width=True, hide_index=True)
+                 width="stretch", hide_index=True)
     st.download_button("Download CSV", df.to_csv(index=False).encode(), "results.csv", "text/csv")

@@ -1,5 +1,6 @@
 # Earnings Call Sentiment & Signal Analyzer
 
+**Live dashboard:** https://earnings-sentiment-xns2ch7q9in3amcts2hbrn.streamlit.app/
 Does the *tone* of an earnings call, and especially the gap between scripted prepared remarks and
 unscripted Q&A, line up with how the stock reacts?
 
@@ -52,13 +53,28 @@ redistribution. Options:
 
 ## Findings
 
-> **Fill this in from your own run.** Don't copy numbers from anywhere else. Suggested structure:
->
-> - Universe, date range, and number of calls with a valid Q&A split.
-> - Table from `correlation_table` (the dashboard's *Signal summary* tab).
-> - Which features, if any, survive multiple-testing correction.
-> - Prepared remarks vs Q&A: is one more informative? (A common hypothesis is that Q&A is, because it's unscripted.)
-> - A plain statement of what the result does and doesn't show. A weak or null result is a legitimate finding.
+**Live dashboard:** https://earnings-sentiment-xns2ch7q9in3amcts2hbrn.streamlit.app/
+
+**Sample:** 76 earnings calls (May 2024 to May 2025) from 19 S&P 500 companies, using the four most recent calls per company in the dataset. EA was dropped because no price data was available. The quarter-over-quarter change features use 57 calls, because they need a prior-quarter call.
+
+**Result:** Almost every sentiment feature correlated positively with the market-adjusted stock return around the call, but the relationships are weak and not conclusive.
+
+| Feature | n | Spearman ρ | p-value |
+|---|---|---|---|
+| Prepared remarks sentiment | 76 | 0.16 | 0.157 |
+| Q&A sentiment | 76 | 0.24 | 0.036 |
+| Overall sentiment | 76 | 0.27 | 0.021 |
+| Q&A minus prepared (gap) | 76 | -0.03 | 0.781 |
+| Prepared sentiment, change vs prior quarter | 57 | 0.32 | 0.015 |
+| Q&A sentiment, change vs prior quarter | 57 | 0.14 | 0.314 |
+| Overall sentiment, change vs prior quarter | 57 | 0.25 | 0.066 |
+
+- The strongest signal is the change in prepared-remarks sentiment from the previous quarter (ρ = 0.32, p = 0.015).
+- With seven features tested, the Bonferroni threshold is p < 0.007, and **none of the results pass it**. They should be read as suggestive, not established.
+- The gap between Q&A and prepared-remarks sentiment shows no relationship with returns.
+- Q&A sentiment is consistently lower than prepared-remarks sentiment, as expected for unscripted answers, but it is not a stronger predictor in this sample.
+- Sentiment probably overlaps with the earnings surprise (beats lead to both upbeat language and price gains), which this project does not control for.
+- The sample is small, non-random (companies with the most transcripts in the dataset), and drawn from a single 12-month period, so the results should not be generalised.
 
 ## Limitations (read before drawing conclusions)
 
